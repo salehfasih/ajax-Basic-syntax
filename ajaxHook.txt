@@ -1,0 +1,326 @@
+<?php 
+
+
+/* enqueue scripts and style from parent theme */
+    
+
+add_action( 'wp_enqueue_scripts', 'enqueue_parent_styles' );
+
+function enqueue_parent_styles() {
+
+wp_enqueue_style( 'parent-style', get_template_directory_uri().'/style.css' );
+
+}
+
+add_action( 'wp_enqueue_scripts', 'my_plugin_add_stylesheet' );
+function my_plugin_add_stylesheet() {
+    wp_enqueue_style( 'my-style', get_stylesheet_directory_uri() . '/style.css');
+    wp_enqueue_style( 'media-query', get_stylesheet_directory_uri() . '/assets/css/Responsive.css');
+    wp_enqueue_script('jquery-main', 'https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js', array(), null, true);
+    wp_enqueue_script( 'parent-jquery', get_template_directory_uri().'/js/jquery/jquery-migrate.min.js',array( 'jquery' ), false, true );
+    wp_enqueue_script( 'parent-script', get_stylesheet_directory_uri().'/assets/js/custom.js' );
+
+}
+
+
+
+function footer_custom_widget(){
+
+    register_sidebar( array(
+        'name' => 'Footer widget 1',
+        'id' => 'footer-widget-1',
+        'description' => 'Appears in the footer area',
+        'before_widget' => '<aside id="%1$s" class="widget %2$s">',
+        'after_widget' => '</aside>',
+        'before_title' => '<h3 class="widget-title">',
+        'after_title' => '</h3>',
+        ) );
+
+    register_sidebar( array(
+        'name' => 'Footer widget 2',
+        'id' => 'footer-widget-2',
+        'description' => 'Appears in the footer area',
+        'before_widget' => '<aside id="%1$s" class="widget %2$s">',
+        'after_widget' => '</aside>',
+        'before_title' => '<h3 class="widget-title">',
+        'after_title' => '</h3>',
+        ) );
+        register_sidebar( array(
+            'name' => 'Footer widget 3',
+            'id' => 'footer-widget-3',
+            'description' => 'Appears in the footer area',
+            'before_widget' => '<aside id="%1$s" class="widget %2$s">',
+            'after_widget' => '</aside>',
+            'before_title' => '<h3 class="widget-title">',
+            'after_title' => '</h3>',
+            ) );
+
+            register_sidebar( array(
+                'name' => 'Footer widget 4',
+                'id' => 'footer-widget-4',
+                'description' => 'Appears in the footer area',
+                'before_widget' => '<aside id="%1$s" class="widget %2$s">',
+                'after_widget' => '</aside>',
+                'before_title' => '<h3 class="widget-title">',
+                'after_title' => '</h3>',
+                ) );
+
+                register_sidebar( array(
+                    'name' => 'Footer widget 5',
+                    'id' => 'footer-widget-5',
+                    'description' => 'Appears in the footer area',
+                    'before_widget' => '<aside id="%1$s" class="widget %2$s">',
+                    'after_widget' => '</aside>',
+                    'before_title' => '<h3 class="widget-title">',
+                    'after_title' => '</h3>',
+                    ) );
+                    register_sidebar( array(
+                        'name' => 'Footer widget 6',
+                        'id' => 'footer-widget-6',
+                        'description' => 'Appears in the footer area',
+                        'before_widget' => '<aside id="%1$s" class="widget %2$s">',
+                        'after_widget' => '</aside>',
+                        'before_title' => '<h3 class="widget-title">',
+                        'after_title' => '</h3>',
+                        ) );
+}
+
+add_action('widgets_init','footer_custom_widget');
+
+add_filter( 'gform_field_content_10', function( $field_content, $field ) {
+
+    if ( $field->id == 1 ) {
+        
+        return '<div>lorem ipsum</div>';
+    }
+    return $field_content;
+}, 10, 2 );
+
+// add_filter('gform_pre_render', 'populate_movies');
+
+//Note: when changing drop down values, we also need to use the gform_pre_validation so that the new values are available when validating the field.
+// add_filter( 'gform_pre_validation', 'populate_movies' );
+
+//Note: when changing drop down values, we also need to use the gform_admin_pre_render so that the right values are displayed when editing the entry.
+add_filter( 'gform_admin_pre_render', 'populate_movies' );
+
+//Note: this will allow for the labels to be used during the submission process in case values are enabled
+// add_filter( 'gform_pre_submission_filter', 'populate_movies' );
+
+function populate_movies( $form ) {
+
+    if ( $form['id'] != "1" ) return $form;
+
+     //Adding items to field id 8. Replace 8 with your actual field id. You can get the field id by looking at the input name in the markup.
+     foreach ( $form['fields'] as &$field ) {
+        if ( $field->id == 8 ) {
+            // $field->choices = $items;
+        }
+    
+    }
+    return $form;
+}
+
+
+function qot_login() {
+    echo '<style type="text/css">
+    .login{
+        background-color:white !important;
+        background-image: url("https://appwebmart.com/client/yield/wp-content/uploads/2021/11/Group-10-1.png")  !important;
+        background-repeat: no-repeat  !important;
+        background-size: 50% !important;
+    }
+    #login {
+        position: absolute !important;
+        left: 58% !important;
+    }
+    .login h1 a{
+        background-image:url("https://appwebmart.com/client/yield/wp-content/uploads/2021/11/Group.png");
+        margin: 6px;
+    }
+    .login form{
+        border:none !important;
+    }
+    .login .button-primary{
+        width: 100% !important;
+        background-color: #FF863C !important;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        font-weight: bold;
+    
+    }
+    .login #nav,.login #backtoblog {
+        text-align: center;
+      
+    }
+@media (min-width:320px )and (max-width:767px){
+
+    .login{
+        background-size:cover   !important;
+       
+    }
+
+    .login #login {
+        position: absolute !important;
+        top: 99% !important;
+        left: 10% !important;
+    }
+}
+
+
+    </style>';
+    }
+
+
+    function my_custom_post_rate() {
+        $labels = array(
+          'name'               => _x( 'Rate', 'post type general name' ),
+          'singular_name'      => _x( 'Rate', 'post type singular name' ),
+          'add_new'            => _x( 'Add New', 'Rate' ),
+          'add_new_item'       => __( 'Add New Rate' ),
+          'edit_item'          => __( 'Edit Rate' ),
+          'new_item'           => __( 'New Rate' ),
+          'all_items'          => __( 'All Rate' ),
+          'view_item'          => __( 'View Rate' ),
+          'search_items'       => __( 'Search Rate' ),
+          'not_found'          => __( 'No Rate found' ),
+          'not_found_in_trash' => __( 'No Rate found in the Trash' ), 
+          'parent_item_colon'  => ’,
+          'menu_name'          => 'Rate'
+        );
+        $args = array(
+          'labels'        => $labels,
+          'public'        => true,
+          'menu_position' => 5,
+          'supports'      => array( 'title', 'editor', 'thumbnail', 'excerpt', 'comments' ),
+          'has_archive'   => true,
+        );
+        register_post_type( 'Rate', $args ); 
+      }
+      add_action( 'init', 'my_custom_post_rate' );
+
+
+
+    //   form  shortcode  Our Rates
+
+
+    function rate_caculate(){
+
+          $output='';
+
+          $output .='<div  class="rate_calculate"><h1>Enter Your Preferences</h1>';
+
+        $output .='<form   id="form3"   method="POST" >
+
+           <label>
+           Amount<br>
+           <select name="amount" id="amount" >
+        <option value="0">$  0 - 99,999</option>
+        <option value="0.10">$ 100,000 - 249,999</option>
+        <option value="0.25">$ 250,000 - 999,999</option>
+        <option value="0.50">$ 1000000 - 2999999</option>
+        <option value="0.75">$ 3000000 - 4999999</option>
+        <option value="1.00">$ 5000000 - 9999999</option>
+        <option value="1.25">$ 10000000</option>
+        </select>
+       
+      </label>
+
+      <label>
+      <select name="currency" id="currency" >
+      <option value="$">USD</option>
+      <option value="AU$">AUD</option>
+      </select>
+      </label>
+
+      <label> Guarantee<br>
+      <select name="gurante" id="gurantee" >
+        <option value="0">Principal & Interest</option>
+        <option value="0.50">No Guarantee</option>
+   
+    </select>
+ </label><br>
+   
+
+
+ <label for="html">Interest Payments</label><br>
+ <input type="radio" id="Monthly" name="Monthly" value="Monthly">
+  <label for="Monthly">Monthly</label>
+<input type="radio" id="Monthly" name="Monthly" value="Monthly">
+  <label for="term">End of term</label>
+
+<input type="hidden" name="field_7" id="mydata" value="'.admin_url( 'admin-ajax.php' ).'" />
+
+<button  id="calculate" >Calculate</button>
+
+
+ </form>';
+
+return $output;
+    }
+
+    add_shortcode('calculate_rate', 'rate_caculate'); 
+
+    add_action("wp_ajax_rate_calculate" , "frontend_action_without_file");
+add_action("wp_ajax_nopriv_rate_calculate" , "frontend_action_without_file");
+
+
+function  frontend_action_without_file(){
+
+    $output='';
+   $amount= floatval($_POST['f3_amnt']);
+   $gurante=floatval($_POST['f3_grnt']);
+   $amount_text=$_POST['f3_amnt_text'];
+   $curr=$_POST['currency'];
+   
+
+    $args = array(
+     'posts_per_page'   => -1,
+     'post_type' => 'rate',
+     'orderby'          => 'post_date',
+     'order'            => 'ASC',
+     'post_status'      => 'publish',
+ );
+ 
+ $posts = get_posts($args);
+ 
+ 
+ if($posts){
+     $output .='<table   class="rate_table"><tr>
+     <th>Maturity Timeframe</th>
+     <th>Interest Rate</th>
+     <th>Monthly Earnings</th>
+     <th>Total Earnings</th>
+     </tr>';
+    foreach($posts as $post){
+
+        $title=get_the_title($post->ID);
+
+        $month=get_post_meta($post->ID,'month',true);
+        $month_percentage=floatval(get_post_meta($post->ID,'month Percentage',true));
+        $output .='<tr>';
+        $rate=$amount+$gurante+$month_percentage;
+        $earning=($amount_text);
+         $earning=round(($amount_text*$rate)/12);
+         $total_earning=$earning*12;
+
+        
+
+        $output .='<tr><td>'.$month.'</td><td>'.$rate.'<span>% <SUB  class="pa">p.a.</SUB></spa></td><td  class="earning2">'.$curr.$earning.'</td><td  class="total_earning2">'.$curr.$total_earning.'</td><td><button  class="apply_online"><a href="https://appwebmart.com/client/yield/apply-online/">Apply Online</a></button></td></tr>';
+
+
+       
+    };
+
+    $output .='</table><div class="note2"><p>Note: Customers are issued a Bill of Exchange recognising principal and interest payment obligations of XYZ Nominees Ltd. Interest rates are fixed for the term of the investment. Customers may extend by providing 30 days notice in writing otherwise the Bill of Exchange falls due at maturity. 
+                *A corporate guarantee is provided for principal and interest payments.</p></div></div>  ';
+};
+
+echo $output; 
+die();
+}
+
+
+add_shortcode('disply_rate','frontend_action_without_file');
+

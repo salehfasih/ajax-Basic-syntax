@@ -1,0 +1,219 @@
+
+
+jQuery(document).ready(function () {
+  jQuery(".popup").hide();
+
+
+  jQuery('.accordion-list > li > .answer').hide();
+
+  jQuery('.accordion-list > li').click(function () {
+    if (jQuery(this).hasClass("active")) {
+      jQuery(this).removeClass("active").find(".answer").slideUp();
+    } else {
+      jQuery(".accordion-list > li.active .answer").slideUp();
+      jQuery(".accordion-list > li.active").removeClass("active");
+      jQuery(this).addClass("active").find(".answer").slideDown();
+
+    }
+    return false;
+  });
+
+
+  if (jQuery("#gform_wrapper_3").find("#gform_3").length < 1) {
+
+    jQuery(".popup").show();
+  };
+
+
+  // input  rate calculation
+  var output = document.getElementById("rate");
+  var earning_output = document.getElementById("earning");
+  var Total_earning_output = document.getElementById("total_earning");
+  jQuery("#gform_fields_1 :input").change(function () {
+    var curr_val=jQuery('select[name="input_11"] option:selected').val();
+    var Amount = parseFloat(jQuery('select[name="input_3"] option:selected').val());
+    var TimeFrame = parseFloat(jQuery('select[name="input_4"] option:selected').val());
+    var Gurante = parseFloat(jQuery('select[name="input_6"] option:selected').val());
+
+    rate_value = Amount + TimeFrame + Gurante;
+    console.log(rate_value);
+    output.innerHTML = curr_val + rate_value + '<span class="suffix">% p.a.</span>';
+
+
+
+    //   input earning calculation
+
+    var Amnt_text = jQuery('select[name="input_3"] option:selected').text();
+    var amnt_slice = Amnt_text.split(" ");
+    console.log(amnt_slice);
+    if (Amnt_text == "10000000") {
+      amnt_slice = Amnt_text;
+    }
+    
+    var amnt_value = parseInt(amnt_slice[1]);
+    var earning = (amnt_value * rate_value) / 12;
+    var Total_earning = earning * 12;
+    Total_earning = Total_earning.toLocaleString("en-US");
+    earning = Math.round(earning);
+    earning = earning.toLocaleString("en-US");
+
+    earning_output.innerHTML = curr_val + earning + '<span class="suffix">per month</span>'
+
+    //Total Earning
+
+    Total_earning_output.innerHTML = curr_val + Total_earning;
+
+
+  });
+
+  var myoutput = document.getElementById('my_output');
+  jQuery("#my_output").hide();
+  jQuery("#calculate").click(function (event) {
+    event.preventDefault();
+    jQuery("#my_output").show();
+    var f3_Amount = parseFloat(jQuery('select[name="amount"] option:selected').val());
+    var f3_Gurante = parseFloat(jQuery('select[name="gurante"] option:selected').val());
+    var currency = jQuery('select[name="currency"] option:selected').val();
+    var Amnt_text = jQuery('select[name="amount"] option:selected').text();
+    var amnt_slice = Amnt_text.split(" ");
+    var amnt_value = parseInt(amnt_slice[1]);
+    var get_hidden_data = jQuery("#mydata").val();
+    // alert(get_hidden_data);
+
+
+    // console.log( f3_Amount);
+
+    var formData = {
+      'action': 'rate_calculate',
+      'f3_amnt': f3_Amount,
+      'f3_grnt': f3_Gurante,
+      'f3_amnt_text': amnt_value,
+      'currency':currency
+    };
+
+
+
+
+    jQuery.ajax({
+      type: "POST",
+      url: get_hidden_data,
+      data: formData,
+      success: function (response) {
+        console.log(response);
+        myoutput.innerHTML = response;
+
+
+
+      },
+    });
+  });
+
+  // currency;
+
+  jQuery("#currency").change(function () {
+    var currency_val = jQuery('select[name="currency"] option:selected').val();
+    var Amnt_text = jQuery('select[name="amount"] option:selected').text();
+    var earning = jQuery('.earning2').text();
+    var cur_symbol = jQuery('#symbol').text();
+
+    console.log(earning);
+
+
+    jQuery('#amount').find('option').each(function () {
+
+      var currency_sign = jQuery(this).text();
+      if (currency_val == 'AU$') {
+        var converted = currency_sign.replace('$', currency_val);
+
+
+
+        jQuery(this).text(converted);
+
+
+      }
+      else {
+        var converted = currency_sign.replace('AU$', '$');
+
+        jQuery(this).text(converted);
+
+        
+      };
+
+    });
+
+
+   jQuery(".rate_table").find('.earning2').each(function(){
+
+    var month_earning = jQuery(this).text();
+    console.log(month_earning);
+    if (currency_val == 'AU$') {
+    var dollar_replace=month_earning.replace('$', currency_val);
+
+    jQuery(this).text(dollar_replace);
+  }
+
+    else{
+      var dollar_replace=month_earning.replace('AU$', '$');
+
+      jQuery(this).text(dollar_replace);
+    }
+
+   });
+
+
+   jQuery(".rate_table").find('.total_earning2').each(function(){
+
+    var month_earning = jQuery(this).text();
+    console.log(month_earning);
+    if (currency_val == 'AU$') {
+    var dollar_replace=month_earning.replace('$', currency_val);
+
+    jQuery(this).text(dollar_replace);
+  }
+
+    else{
+      var dollar_replace=month_earning.replace('AU$', '$');
+
+      jQuery(this).text(dollar_replace);
+    }
+
+   });
+
+  });
+
+
+// form1 currency 
+  jQuery("#input_1_11").change(function () {
+    var curr_val=jQuery('select[name="input_11"] option:selected').val();
+
+    jQuery("#input_1_3").find('option').each(function(){
+
+
+      var Amnt_text = jQuery(this).text();
+      if (curr_val == 'AU$') {
+      var dollar_replace=Amnt_text.replace('$', curr_val);
+      jQuery(this).text(dollar_replace);
+      console.log(dollar_replace);
+
+      }
+
+      else{
+        var dollar_replace=Amnt_text.replace('AU$', '$');
+        jQuery(this).text(dollar_replace);
+      }
+
+    });
+
+  
+
+
+
+  
+  })
+  
+});
+
+
+
+
+
